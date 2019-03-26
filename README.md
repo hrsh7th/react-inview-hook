@@ -5,6 +5,7 @@ react-hooks with intersection-observer.
 # Why?
 
 This module will cache IntersectionObservers (group by IntersectionObserverInit).
+
 That's reason is performance on IE11 with polyfill.
 
 # Usage
