@@ -1,0 +1,47 @@
+{
+  "name": "react-inview-hook",
+  "version": "0.0.0",
+  "description": "react hooks & intersection-observer",
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "types": "lib/esm/index.d.ts",
+  "scripts": {
+    "build": "rimraf lib/**/*.{js,map} && tsc -p ./tsconfig.esm.json && tsc -p ./tsconfig.cjs.json",
+    "test": "echo 1",
+    "pretty-quick": "pretty-quick",
+    "precommit": "pretty-quick --staged",
+    "postcommit": "git reset",
+    "release": "npm run build && np"
+  },
+  "author": "hrsh7th",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hrsh7th/react-inview-hook.git"
+  },
+  "keywords": [
+    "react",
+    "intersection-observer"
+  ],
+  "files": [
+    "lib"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "@types/react": "^16.8.8",
+    "@types/react-dom": "^16.8.2",
+    "husky": "^1.1.2",
+    "intersection-observer": "^0.5.1",
+    "jest": "^23.6.0",
+    "np": "^3.0.4",
+    "prettier": "^1.14.3",
+    "pretty-quick": "^1.8.0",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "rimraf": "^2.6.3",
+    "ts-jest": "^23.10.5",
+    "ts-loader": "^5.3.3",
+    "tslib": "^1.9.3",
+    "typescript": "^3.2.4"
+  }
+}
