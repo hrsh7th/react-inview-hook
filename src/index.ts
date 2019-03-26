@@ -46,6 +46,9 @@ export const useInView = (
         onEnter();
         if (unobserveOnEnter) {
           group.unregister(element);
+          if (group.isEmpty()) {
+            cache.remove(group);
+          }
         }
       } else {
         onLeave();
