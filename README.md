@@ -14,7 +14,7 @@ That's reason is performance on IE11 with polyfill.
 import React, { useState, useRef } from "react";
 import { useInView } from "react-inview-hook";
 
-export const SomeComponent = ({ recheck }: Props) => {
+export const SomeComponent = () => {
   const [isInView, setIsInView] = useState(false);
   const ref = useRef(null);
 
@@ -27,7 +27,3 @@ export const SomeComponent = ({ recheck }: Props) => {
   return <div ref={ref}>isInView? {isInView ? "true" : "false"}</div>;
 };
 ```
-
-# Tips
-
-You can re-invoke `onEnter` via `useInView({ ... } , [revision])`.
