@@ -1,4 +1,4 @@
-import { RefObject, useLayoutEffect } from "react";
+import { RefObject, useEffect } from "react";
 import { Cache } from "./cache";
 import { IntersectionObserverInit } from "./group";
 
@@ -11,36 +11,22 @@ type Props = {
   unobserveOnEnter?: boolean;
 } & IntersectionObserverInit;
 
-export const useInView = (
-  {
-    ref,
-    onEnter = () => {},
-    onLeave = () => {},
-    unobserveOnEnter = false,
-    root,
-    rootMargin,
-    threshold
-  }: Props,
-  deps: any[]
-) => {
-  const group = cache.get({ root, rootMargin, threshold });
-
-  // recheck if needed
-  useLayoutEffect(() => {
-    const element = ref.current;
-    if (!element) {
-      return;
-    }
-    group.check(element);
-  }, deps);
-
-  // register/unregister
-  useLayoutEffect(() => {
+export const useInView = ({
+  ref,
+  onEnter = () => {},
+  onLeave = () => {},
+  unobserveOnEnter = false,
+  root,
+  rootMargin,
+  threshold
+}: Props) => {
+  useEffect(() => {
     const element = ref.current;
     if (!element) {
       return;
     }
 
+    const group = cache.get({ root, rootMargin, threshold });
     group.register(element, entry => {
       if (entry.isIntersecting) {
         onEnter();

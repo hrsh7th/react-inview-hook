@@ -65,7 +65,7 @@ export class Cache {
       {
         root: (observerInit.root && observerInit.root.current) || null,
         rootMargin: observerInit.rootMargin || "0px",
-        threshold: observerInit.threshold || 1
+        threshold: observerInit.threshold || 0
       }
     );
   }

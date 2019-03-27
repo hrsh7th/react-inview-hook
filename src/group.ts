@@ -3,7 +3,7 @@ import { RefObject } from "react";
 export type IntersectionObserverInit = {
   root?: RefObject<Element>;
   rootMargin?: string;
-  threshold?: number;
+  threshold?: number | number[];
 };
 
 type Callback = (entry: IntersectionObserverEntry) => void;
