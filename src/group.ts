@@ -9,11 +9,12 @@ export type IntersectionObserverInit = {
 type Callback = (entry: IntersectionObserverEntry) => void;
 
 export class Group {
-  public constructor(
-    public readonly observerInit: IntersectionObserverInit,
-    public readonly observer: IntersectionObserver,
-    public readonly map: Map<Element, Callback>
-  ) {}
+  public readonly observer: IntersectionObserver;
+  public readonly map: Map<Element, Callback> = new Map();
+
+  public constructor(public readonly observerInit: IntersectionObserverInit) {
+    this.observer = this.createObserver(observerInit);
+  }
 
   /**
    * register element to observe.
@@ -24,16 +25,6 @@ export class Group {
     }
     this.observer.observe(element);
     this.map.set(element, callback);
-  }
-
-  /**
-   * return element's callback.
-   */
-  public callback(element: Element): Callback {
-    if (!this.map.has(element)) {
-      return () => {};
-    }
-    return this.map.get(element)!;
   }
 
   /**
@@ -48,14 +39,13 @@ export class Group {
   }
 
   /**
-   * check immediately.
+   * return element's callback.
    */
-  public check(element: Element) {
+  public callback(element: Element): Callback {
     if (!this.map.has(element)) {
-      return;
+      return () => {};
     }
-    this.observer.unobserve(element);
-    this.observer.observe(element);
+    return this.map.get(element)!;
   }
 
   /**
@@ -63,5 +53,25 @@ export class Group {
    */
   public isEmpty() {
     return this.map.size <= 0;
+  }
+
+  /**
+   * create intersection observer instance.
+   */
+  private createObserver(
+    observerInit: IntersectionObserverInit
+  ): IntersectionObserver {
+    return new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          this.callback(entry.target)(entry);
+        });
+      },
+      {
+        root: (observerInit.root && observerInit.root.current) || null,
+        rootMargin: observerInit.rootMargin || "0px",
+        threshold: observerInit.threshold || 0
+      }
+    );
   }
 }

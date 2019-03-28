@@ -12,13 +12,7 @@ export class Cache {
       return item;
     }
 
-    this.groups.push(
-      new Group(
-        observerInit,
-        this.createObserver(observerInit),
-        new Map<Element, (entry: IntersectionObserverEntry) => void>()
-      )
-    );
+    this.groups.push(new Group(observerInit));
 
     return this.findGroupByInit(observerInit)!;
   }
@@ -46,27 +40,6 @@ export class Cache {
           return false;
         return true;
       }) || null
-    );
-  }
-
-  /**
-   * create intersection observer instance.
-   */
-  private createObserver(
-    observerInit: IntersectionObserverInit
-  ): IntersectionObserver {
-    return new IntersectionObserver(
-      entries => {
-        const group = this.findGroupByInit(observerInit)!;
-        entries.forEach(entry => {
-          group.callback(entry.target)(entry);
-        });
-      },
-      {
-        root: (observerInit.root && observerInit.root.current) || null,
-        rootMargin: observerInit.rootMargin || "0px",
-        threshold: observerInit.threshold || 0
-      }
     );
   }
 }
