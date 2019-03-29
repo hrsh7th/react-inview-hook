@@ -7,9 +7,9 @@ export class Cache {
    * get group by IntersectionObserverInit.
    */
   public get(observerInit: IntersectionObserverInit): Group {
-    const item = this.findGroupByInit(observerInit);
-    if (item) {
-      return item;
+    const group = this.findGroupByInit(observerInit);
+    if (group) {
+      return group;
     }
 
     this.groups.push(new Group(observerInit));
