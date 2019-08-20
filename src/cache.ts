@@ -37,7 +37,7 @@ export class Cache {
         if (group.observerInit.root !== observerInit.root) return false;
         if (group.observerInit.rootMargin !== observerInit.rootMargin)
           return false;
-        if (group.observerInit.threshold !== observerInit.threshold)
+        if (!this.isSame(group.observerInit.threshold, observerInit.threshold))
           return false;
         return true;
       }) || null
@@ -53,5 +53,13 @@ export class Cache {
       rootMargin: observerInit.rootMargin || "0px",
       threshold: observerInit.threshold || 0
     };
+  }
+
+  private isSame(value1: unknown | unknown[], value2: unknown | unknown[]) {
+    const v1 = ([] as unknown[]).concat(value1);
+    const v2 = ([] as unknown[]).concat(value2);
+    return v1.every(v => {
+      return v2.includes(v);
+    });
   }
 }
