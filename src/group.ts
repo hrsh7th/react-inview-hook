@@ -1,7 +1,5 @@
-import { RefObject } from "react";
-
 export type IntersectionObserverInit = {
-  root?: RefObject<Element>;
+  root?: Element | null;
   rootMargin?: string;
   threshold?: number | number[];
 };
@@ -12,6 +10,9 @@ export class Group {
   public readonly observer: IntersectionObserver;
   public readonly map: Map<Element, Callback> = new Map();
 
+  /**
+   * @param observerInit - Normalized `IntersectionObserverInit`
+   */
   public constructor(public readonly observerInit: IntersectionObserverInit) {
     this.observer = this.createObserver(observerInit);
   }
@@ -68,9 +69,9 @@ export class Group {
         });
       },
       {
-        root: (observerInit.root && observerInit.root.current) || null,
-        rootMargin: observerInit.rootMargin || "0px",
-        threshold: observerInit.threshold || 0
+        root: observerInit.root,
+        rootMargin: observerInit.rootMargin,
+        threshold: observerInit.threshold
       }
     );
   }

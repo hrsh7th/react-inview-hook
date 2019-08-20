@@ -1,6 +1,5 @@
 import { RefObject, useEffect } from "react";
 import { Cache } from "./cache";
-import { IntersectionObserverInit } from "./group";
 
 const cache = new Cache();
 
@@ -9,7 +8,10 @@ type Props = {
   onEnter?: () => void;
   onLeave?: () => void;
   unobserveOnEnter?: boolean;
-} & IntersectionObserverInit;
+  root?: RefObject<Element>;
+  rootMargin?: string;
+  threshold?: number | number[];
+};
 
 export const useInView = ({
   ref,
@@ -26,7 +28,11 @@ export const useInView = ({
       return;
     }
 
-    const group = cache.get({ root, rootMargin, threshold });
+    const group = cache.get({
+      root: root && root.current,
+      rootMargin: rootMargin,
+      threshold: threshold
+    });
     group.register(element, entry => {
       if (entry.isIntersecting) {
         onEnter();

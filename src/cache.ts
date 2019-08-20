@@ -7,14 +7,15 @@ export class Cache {
    * get group by IntersectionObserverInit.
    */
   public get(observerInit: IntersectionObserverInit): Group {
-    const group = this.findGroupByInit(observerInit);
+    const normalizedObserverInit = this.observerInit(observerInit);
+    const group = this.findGroupByInit(normalizedObserverInit);
     if (group) {
       return group;
     }
 
-    this.groups.push(new Group(observerInit));
+    this.groups.push(new Group(normalizedObserverInit));
 
-    return this.findGroupByInit(observerInit)!;
+    return this.findGroupByInit(normalizedObserverInit)!;
   }
 
   /**
@@ -41,5 +42,16 @@ export class Cache {
         return true;
       }) || null
     );
+  }
+
+  /**
+   * get normalized `IntersectionObserverInit`.
+   */
+  private observerInit(observerInit: IntersectionObserverInit) {
+    return {
+      root: observerInit.root || null,
+      rootMargin: observerInit.rootMargin || "0px",
+      threshold: observerInit.threshold || 0
+    };
   }
 }
