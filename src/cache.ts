@@ -7,14 +7,15 @@ export class Cache {
    * get group by IntersectionObserverInit.
    */
   public get(observerInit: IntersectionObserverInit): Group {
-    const group = this.findGroupByInit(observerInit);
+    const normalizedObserverInit = this.observerInit(observerInit);
+    const group = this.findGroupByInit(normalizedObserverInit);
     if (group) {
       return group;
     }
 
-    this.groups.push(new Group(observerInit));
+    this.groups.push(new Group(normalizedObserverInit));
 
-    return this.findGroupByInit(observerInit)!;
+    return this.findGroupByInit(normalizedObserverInit)!;
   }
 
   /**
@@ -36,10 +37,29 @@ export class Cache {
         if (group.observerInit.root !== observerInit.root) return false;
         if (group.observerInit.rootMargin !== observerInit.rootMargin)
           return false;
-        if (group.observerInit.threshold !== observerInit.threshold)
+        if (!this.isSame(group.observerInit.threshold, observerInit.threshold))
           return false;
         return true;
       }) || null
     );
+  }
+
+  /**
+   * get normalized `IntersectionObserverInit`.
+   */
+  private observerInit(observerInit: IntersectionObserverInit) {
+    return {
+      root: observerInit.root || null,
+      rootMargin: observerInit.rootMargin || "0px",
+      threshold: observerInit.threshold || 0
+    };
+  }
+
+  private isSame(value1: unknown | unknown[], value2: unknown | unknown[]) {
+    const v1 = ([] as unknown[]).concat(value1);
+    const v2 = ([] as unknown[]).concat(value2);
+    return v1.every(v => {
+      return v2.includes(v);
+    });
   }
 }
